@@ -1,6 +1,7 @@
 import os
 import sys
 import fitz  # PyMuPDF 라이브러리
+import sys
 
 
 def convert_pdf_to_images(pdf_path, output_dir, image_format="jpg"):
@@ -47,10 +48,16 @@ def convert_pdf_to_images(pdf_path, output_dir, image_format="jpg"):
         if doc:
             doc.close()
 
+
 def main():
     """PDF 변환을 직접 실행하는 메인 함수입니다."""
-    # 스크립트가 있는 디렉터리를 기준으로 경로를 설정합니다.
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+    if getattr(sys, 'frozen', False):
+       # Running as a bundled exe
+       script_dir = os.path.dirname(sys.executable)
+    else:
+       # Running as a .py script
+       script_dir = os.path.dirname(os.path.abspath(__file__))
+    
     pdf_source_dir = os.path.join(script_dir, "pdf") # PDF 파일이 있는 폴더
     # 이미지를 저장할 폴더 (스크립트 위치 아래에 'image' 폴더)
     output_directory = os.path.join(script_dir, "image")
